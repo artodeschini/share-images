@@ -19,8 +19,6 @@ app.get('/cor/:pessoa', (req, res) => {
     } else {
         res.json({cor: 'blabla blabla'});
     }
-
-
 });
 
 // remove do app para poder integrar o jest com express
