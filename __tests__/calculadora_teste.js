@@ -1,15 +1,37 @@
-const app = require('../app');
+const calculadora = require('../calculadora');
 
-// primeiro teste it e test sao iguais pode se usar qualquer uma das duas
-test("Deve retornar 10 quando somar 5 + 5", () => {
-    const resultado = app.soma(5, 5);
+describe("Operacoes basicas", () => {
 
-    expect(resultado).toEqual(10);
-});
+    // primeiro teste it e test sao iguais pode se usar qualquer uma das duas
+    test("Deve retornar 10 quando somar 5 + 5", () => {
+        const resultado = calculadora.soma(5, 5);
 
-it("Deve retornar um ao somar 5 + 5 esperando 11", () => {
-    const resultado = app.soma(5,5);
+        expect(resultado).toEqual(10);
+    });
 
-    expect(resultado).toBeGreaterThan(10);
-    //expect(resultado).toEqual(10); isso daria um erro
+    // it("Deve retornar um ao somar 5 + 5 esperando 11", () => {
+    //     const resultado = app.soma(5,5);
+
+    //     expect(resultado).toBeGreaterThan(9);
+    //     //expect(resultado).toEqual(10); isso daria um erro
+    // });
+
+    test("Deve retornar 10 quando enviar 2 * 5 ", () => {
+        const resultado = calculadora.multiplicacao(2,5);
+
+        expect(resultado).toEqual(10);
+    });
+
+    test("Deve retornar 2 quando subtrair 5 - 3 ", () => {
+        const resultado = calculadora.subtracao(5,3);
+
+        expect(resultado).toEqual(2);
+    });
+
+    test("Deve retornar 2 quando dividir 10 / 5 ", () => {
+        const resultado = calculadora.divisao(10,5);
+
+        expect(resultado).toEqual(2);
+    });
+
 });
