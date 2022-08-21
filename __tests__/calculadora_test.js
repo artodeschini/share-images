@@ -1,4 +1,4 @@
-const calculadora = require('../calculadora');
+const calculadora = require('../src/calculadora');
 
 describe("Operacoes basicas", () => {
 
@@ -32,6 +32,18 @@ describe("Operacoes basicas", () => {
         const resultado = calculadora.divisao(10,5);
 
         expect(resultado).toEqual(2);
+    });
+
+    test("Deve lancar erro quando dividir algo por 0", () => {
+        //try {
+            const resultado = calculadora.divisao(1/0);
+            console.log(resultado);
+            expect(resultado).toBeNaN();
+                      //throw new Error('xi deu ruim deixou dividir por 0');
+        //} catch (error) {
+            //console.log(error);
+            //expect(error).toContain('0');
+        //}
     });
 
 });

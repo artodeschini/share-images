@@ -14,6 +14,7 @@ npm run test
 npm init
 
 npm install jest --save
-npm instal @types/jest --save
+npm install @types/jest --save
+npm install supertest --save
+npm install express --save
 ```
-
