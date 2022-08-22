@@ -4,21 +4,22 @@ class UserController {
 
     async create(req, res) {
         try {
-            const check = service.create(req.body); 
-            if (check) {
+            const check = await service.create(req.body); 
+            
+            if (check.status) {
                 res.status(201)
-                res.json({});
+                res.json(check);
+
             } else {
                 res.status(400)
-                res.json({});
+                res.json(check);
             }
-           
+        
         } catch (error) {
             console.log(error);
             res.status(500);
-            res.json({});
+            res.json(check);
         }
-        
     }
 }
 
