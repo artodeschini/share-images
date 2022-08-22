@@ -30,6 +30,10 @@ class UserController {
             res.status(500);
         }
     }
+
+    async login(req, res) {
+        
+    }
 }
 
 module.exports = new UserController();

@@ -32,7 +32,7 @@ afterAll(() => {
     return User.deleteMany({name: 'teste'}).then(res => {}).catch(e => console.log(e));
 });
 
-describe("Teste de cadastro de usuario", () => {
+describe("Testes de cadastro de usuario", () => {
     it("Deve cadastrar um usuario com sucesso", () => { 
         return request.post('/user')
             .send(newUser)
@@ -40,9 +40,10 @@ describe("Teste de cadastro de usuario", () => {
                 
                 expect(res.statusCode).toEqual(201);
 
-            }).catch(error => {
-                console.log(error);
-                throw new Error(error);
+            }).catch(e => {
+                console.log(e);
+                //throw new Error(error);
+                fail(e)
             });
     });
 
@@ -60,9 +61,9 @@ describe("Teste de cadastro de usuario", () => {
                 expect(res.statusCode).toEqual(400);
                 expect(res.body.msg).toContain('sao obrigatorios');
 
-            }).catch(error => {
-                //fail(error);
-                throw new Error(error);
+            }).catch(e => {
+                fail(e);
+                //throw new Error(error);
             })
     });
 
@@ -80,4 +81,20 @@ describe("Teste de cadastro de usuario", () => {
             })
     });
 
+});
+
+describe("Testes de autenticacao", () => {
+
+    test("deve me tornornar o token ao passar um login e senha correto", () => {
+        request.post("/auth")
+            .send(jwtUser)
+            .then(res => {
+                expect(res.statusCode).toEqual(200);
+                // o token nao pode ser undefined
+                expect(res.body.token).toBeDefined();
+            }).catch(e => {
+                console.log(e);
+                fail(e);
+            })
+    });
 });
