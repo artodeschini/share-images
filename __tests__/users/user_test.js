@@ -1,15 +1,20 @@
 const supertest = require('supertest');
 const app = require('../../src/app');
+const UserController = require('../../src/controller/UserController');
 const request = supertest(app); // integra jest com o app
 
-const testeUser = {
+const mongoose = require('mongoose');
+const model = require('../../src/model/User');
+const User = mongoose.model('User', model);
+
+const jwtUser = {
     name: "teste",
     email: "teste@teste.com",
     password: '123456'
 }
 
-const userCreate = {
-    name: "new",
+const newUser = {
+    name: "teste",
     email: "new@new.com",
     password: '123456'
 }
@@ -17,27 +22,20 @@ const userCreate = {
 // executa antes de todos os testes
 beforeAll(() => {
     return request.post(`/user`)
-        .send(testeUser)
+        .send(jwtUser)
         .then(res => {})
         .catch(error => {console.log(error)});
 });
 
 // executa depois de todos os testes
 afterAll(() => {
-    deleteUser(testeUser);
-    deleteUser(userCreate);
+    return User.deleteMany({name: 'teste'}).then(res => {}).catch(e => console.log(e));
 });
-
-function deleteUser(user) {
-    return request.delete(`/user/${user.email}`)
-        .then(res => {})
-        .catch(error => {console.log(error)});
-}
 
 describe("Teste de cadastro de usuario", () => {
     it("Deve cadastrar um usuario com sucesso", () => { 
         return request.post('/user')
-            .send(userCreate)
+            .send(newUser)
             .then(res => {
                 
                 expect(res.statusCode).toEqual(201);
@@ -70,7 +68,7 @@ describe("Teste de cadastro de usuario", () => {
 
     it("Nao deve permitir cadastrar um usuario com email já existente", () => {
         return request.post('/user')
-            .send(testeUser)
+            .send(jwtUser)
             .then(res => {
                 
                 expect(res.statusCode).toEqual(400);
