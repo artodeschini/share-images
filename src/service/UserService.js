@@ -7,15 +7,23 @@ class UserService {
 
     async create(body) {
 
-        let {name, email, password} = body;
-        let document = new User({name, email, password});
+        if (body.name == '' || body.email == '' || body.password == '') {
+            return false;
+            
+        } else {
+            let {name, email, password} = body;
+            let document = new User({name, email, password});
 
-        try {
-            await document.save();
-        } catch (error) {
-            console.log(error);
-            throw error;
+            try {
+                await document.save();
+                return true;
+            } catch (error) {
+                console.log(error);
+                return false;
+            }
         }
+
+        
     }
 }
 
