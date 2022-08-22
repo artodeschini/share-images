@@ -1,5 +1,5 @@
 const salt = 10;
-const jwtSecret = "AlgumaCoisa";
+const secret = "AlgumaCoisa";
 
 module.exports = {
     salt,

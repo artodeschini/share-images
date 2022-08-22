@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const model = require('../model/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const secret = require('./secret');
+const key = require('./secret');
 
 const User = mongoose.model('User', model);
 
@@ -24,7 +24,7 @@ class UserService {
                     return {status: false, msg: 'email ja em uso'};
                 }
 
-                let salt = await bcrypt.genSalt(secret.salt);
+                let salt = await bcrypt.genSalt(key.salt);
                 let hash = await bcrypt.hash(password, salt);
                 
                 let document = new User({name, email, password: hash});
@@ -51,7 +51,7 @@ class UserService {
     async login(body) {
         let {email, password} = body;
 
-        jwt.sign({email}, secret.secret, {expiresIn: '1h'});
+        jwt.sign({email}, key.secret, {expiresIn: '1h'});
     }
 }
 
