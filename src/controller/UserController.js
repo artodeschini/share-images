@@ -39,16 +39,19 @@ class UserController {
 
     async login(req, res) {
         try {
-            const result = await service.login(req.body);
+            let result = await service.login(req.body);
             if (result.status) {
                 res.status(200);
-                res.json(result.msg); 
+                res.json(result.msg);
+                return; 
             } else {
                 res.status(401); 
+                return;
             }
         } catch (e) {
             console.log(e)
             res.status(404);
+            return;
         }
     }
 }
