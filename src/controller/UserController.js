@@ -23,16 +23,33 @@ class UserController {
     }
 
     async remove(req, res) {
-        const result = await service.delete(req.params.email);
-        if (result) {
-            res.status(204);
-        } else {
+        try {
+            const result = await service.delete(req.params.email);
+            if (result) {
+                res.status(204);
+            } else {
+                res.status(500);
+            }
+        } catch (e) {
+            console.log(e)
             res.status(500);
         }
+       
     }
 
     async login(req, res) {
-        
+        try {
+            const result = await service.login(req.body);
+            if (result.status) {
+                res.status(200);
+                res.json(result.msg); 
+            } else {
+                res.status(401); 
+            }
+        } catch (e) {
+            console.log(e)
+            res.status(404);
+        }
     }
 }
 

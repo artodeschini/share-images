@@ -51,7 +51,54 @@ class UserService {
     async login(body) {
         let {email, password} = body;
 
-        jwt.sign({email}, key.secret, {expiresIn: '1h'});
+        try {
+
+            let user = await User.findOne({'email': email});
+
+            if (user != undefined) {
+                // bcrypt.compareSync(password, user.password);
+                let result = await bcrypt.compareSync(password, user.password);
+
+                if (result) {
+                    // let token = jwt.sign({emai: user.email, role: user.role , secret);
+                    jwt.sign(
+                        {
+                            id: user.id,
+                            email: user.email,
+                            nome: user.nome
+                            /*, role: user.role */
+                        },
+                        key.secret,
+                        {expiresIn: '1h'},
+                        //{expiresIn: '1m'},
+                        (e, token) => {
+                            if (e) {
+                                console.log(e);
+                                return {status: false, codigo: 400, msg: 'Erro ao gerar token'};
+                                // res.status(400);
+                                // res.send({message:"Erro ao gerar o token"});
+                            } else {
+                                // res.status(200);
+                                // res.send({'token': token});
+                                return {status: true, codigo: 200, msg: '', token};
+                            }
+                        }
+                    );
+
+                } else {
+                    //res.status(401);
+                    //res.send({msg: 'login invalido'});
+                    return {status: false, codigo: 401, msg: 'login invalido'};
+                }
+
+            } else {
+                return {status: false, codigo:404, msg: 'usuario nao encontrado'};
+            }
+            
+        } catch (e) {
+            console.log(e);
+            return {status: false, codigo:404, msg: e};
+        }
     }
 }
 

@@ -75,9 +75,9 @@ describe("Testes de cadastro de usuario", () => {
                 expect(res.statusCode).toEqual(400);
                 expect(res.body.msg).toContain('email ja em uso');
 
-            }).catch(error => {
+            }).catch(e => {
                 //fail(error);
-                throw new Error(error);
+                throw new Error(e);
             })
     });
 
