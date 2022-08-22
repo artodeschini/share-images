@@ -23,6 +23,6 @@ npm install jest --save
 npm install @types/jest --save
 npm install supertest --save
 npm install express --save
-npm install mongose --save
+npm install mongoose --save
 npm install jsonwebtoken --save
 ```
