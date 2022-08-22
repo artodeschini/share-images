@@ -2,19 +2,42 @@ const supertest = require('supertest');
 const app = require('../../src/app');
 const request = supertest(app); // integra jest com o app
 
+const testeUser = {
+    name: "teste",
+    email: "teste@teste.com",
+    password: '123456'
+}
+
+const userCreate = {
+    name: "new",
+    email: "new@new.com",
+    password: '123456'
+}
+
+// executa antes de todos os testes
+beforeAll(() => {
+    return request.post(`/user`)
+        .send(testeUser)
+        .then(res => {})
+        .catch(error => {console.log(error)});
+});
+
+// executa depois de todos os testes
+afterAll(() => {
+    deleteUser(testeUser);
+    deleteUser(userCreate);
+});
+
+function deleteUser(user) {
+    return request.delete(`/user/${user.email}`)
+        .then(res => {})
+        .catch(error => {console.log(error)});
+}
+
 describe("Teste de cadastro de usuario", () => {
-
-    it("Deve cadastrar um usuario com sucesso", () => {
-        let time = Date.now();
-        let email = `${time}@gmail.com` 
-        let user = {
-            name: 'Artur',
-            email,
-            password: '123456' 
-        }
-
+    it("Deve cadastrar um usuario com sucesso", () => { 
         return request.post('/user')
-            .send(user)
+            .send(userCreate)
             .then(res => {
                 
                 expect(res.statusCode).toEqual(201);
@@ -22,7 +45,7 @@ describe("Teste de cadastro de usuario", () => {
             }).catch(error => {
                 console.log(error);
                 throw new Error(error);
-            })
+            });
     });
 
     it('Deve impedir que um usuario seja cadastrado com dados vazios', () => {
@@ -46,31 +69,12 @@ describe("Teste de cadastro de usuario", () => {
     });
 
     it("Nao deve permitir cadastrar um usuario com email já existente", () => {
-        let time = Date.now();
-        let email = `${time}@gmail.com` 
-        let user = {
-            name: 'Artur',
-            email,
-            password: '123456' 
-        }
-
         return request.post('/user')
-            .send(user)
+            .send(testeUser)
             .then(res => {
                 
-                expect(res.statusCode).toEqual(201);
-
-                return request.post('/user')
-                .send(user)
-                .then(res => {
-                    
-                    expect(res.statusCode).toEqual(400);
-                    expect(res.body.msg).toContain('email ja em uso');
-    
-                }).catch(error => {
-                    //fail(error);
-                    throw new Error(error);
-                })
+                expect(res.statusCode).toEqual(400);
+                expect(res.body.msg).toContain('email ja em uso');
 
             }).catch(error => {
                 //fail(error);

@@ -35,6 +35,16 @@ class UserService {
             }
         }
     }
+
+    async delete(email) {
+        try {
+            await User.deleteOne({'email': email});
+            return true;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
 }
 
 module.exports = new UserService();

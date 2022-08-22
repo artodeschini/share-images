@@ -21,6 +21,15 @@ class UserController {
             res.json(check);
         }
     }
+
+    async remove(req, res) {
+        const result = await service.delete(req.params.email);
+        if (result) {
+            res.status(204);
+        } else {
+            res.status(500);
+        }
+    }
 }
 
 module.exports = new UserController();
